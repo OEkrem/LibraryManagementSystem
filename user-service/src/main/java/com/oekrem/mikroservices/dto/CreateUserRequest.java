@@ -1,25 +1,20 @@
 package com.oekrem.mikroservices.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateUserRequest {
+public record CreateUserRequest (
 
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String password;
-    private String firstName;
-    private String lastName;
-    @NotBlank
-    private String email;
-    private String phone;
+        @NotBlank(message = "Username is required")
+        String username,
+        @NotBlank(message = "Password is required")
+        String password,
+        String firstName,
+        String lastName,
+        @NotBlank(message = "Email is required")
+        String email,
+        String phone
 
+) {
 }

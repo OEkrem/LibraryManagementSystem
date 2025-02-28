@@ -1,26 +1,20 @@
 package com.oekrem.mikroservices.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-@Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdateUserRequest {
+public record UpdateUserRequest (
 
-    @NotNull
-    private UUID id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
+        @NotBlank(message = "Username is required")
+        String username,
+        @NotBlank(message = "Password is required")
+        String password,
+        String firstName,
+        String lastName,
+        @NotBlank(message = "Email is required")
+        String email,
+        String phone
 
+){
 }
