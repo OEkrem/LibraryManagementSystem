@@ -50,8 +50,6 @@ build/
 /user-service/src/main/java/com/oekrem/mikroservices/dto/CreateUserRequest.java
 /user-service/src/main/java/com/oekrem/mikroservices/dto/UpdateUserRequest.java
 /user-service/src/main/java/com/oekrem/mikroservices/dto/UserResponse.java
-/user-service/src/main/java/com/oekrem/mikroservices/event/
-/user-service/src/main/java/com/oekrem/mikroservices/exception/
 /user-service/src/main/java/com/oekrem/mikroservices/model/User.java
 /user-service/src/main/java/com/oekrem/mikroservices/repository/UserRepository.java
 /user-service/src/main/java/com/oekrem/mikroservices/service/UserService.java
