@@ -37,20 +37,3 @@ build/
 ### Mac OS ###
 .DS_Store
 /api-gateway/src/main/java/com/oekrem/mikroservices/controller/BookGatewayController.java
-/book-service/src/main/java/com/oekrem/mikroservices/controller/BookController.java
-/book-service/src/main/java/com/oekrem/mikroservices/dto/BookResponse.java
-/book-service/src/main/java/com/oekrem/mikroservices/dto/CreateBookRequest.java
-/book-service/src/main/java/com/oekrem/mikroservices/dto/UpdateBookRequest.java
-/book-service/src/main/java/com/oekrem/mikroservices/model/Book.java
-/book-service/src/main/java/com/oekrem/mikroservices/repository/BookRepository.java
-/book-service/src/main/java/com/oekrem/mikroservices/service/BookService.java
-/book-service/src/main/java/com/oekrem/mikroservices/service/BookServiceImpl.java
-/user-service/src/main/java/com/oekrem/mikroservices/config/AppConfig.java
-/user-service/src/main/java/com/oekrem/mikroservices/controller/UserController.java
-/user-service/src/main/java/com/oekrem/mikroservices/dto/CreateUserRequest.java
-/user-service/src/main/java/com/oekrem/mikroservices/dto/UpdateUserRequest.java
-/user-service/src/main/java/com/oekrem/mikroservices/dto/UserResponse.java
-/user-service/src/main/java/com/oekrem/mikroservices/model/User.java
-/user-service/src/main/java/com/oekrem/mikroservices/repository/UserRepository.java
-/user-service/src/main/java/com/oekrem/mikroservices/service/UserService.java
-/user-service/src/main/java/com/oekrem/mikroservices/service/UserServiceImpl.java
