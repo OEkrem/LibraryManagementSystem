@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow( ()-> new BookNotFoundException("Book with id " + id + " not found"));
 
-        if(updateBookRequest.title() != null)
+        /*if(updateBookRequest.title() != null)
             book.setTitle(updateBookRequest.title());
         if(updateBookRequest.author() != null)
             book.setAuthor(updateBookRequest.author());
@@ -91,8 +91,8 @@ public class BookServiceImpl implements BookService {
         if(updateBookRequest.rating() != null)
             book.setRating(updateBookRequest.rating());
         if(updateBookRequest.edition() != null)
-            book.setEdition(updateBookRequest.edition());
-        //bookMapper.updateBookFromRequest(updateBookRequest, book);
+            book.setEdition(updateBookRequest.edition());*/
+        bookMapper.updateBookFromRequest(updateBookRequest, book);
 
         Book updatedBook = bookRepository.save(book);
         return bookMapper.toResponse(updatedBook);
