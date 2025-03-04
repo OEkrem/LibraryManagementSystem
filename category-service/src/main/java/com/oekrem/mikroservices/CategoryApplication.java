@@ -4,7 +4,7 @@ package com.oekrem.mikroservices;
  * Hello world!
  *
  */
-public class App 
+public class CategoryApplication
 {
     public static void main( String[] args )
     {

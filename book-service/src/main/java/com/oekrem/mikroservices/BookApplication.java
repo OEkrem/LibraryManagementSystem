@@ -3,15 +3,11 @@ package com.oekrem.mikroservices;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Hello world!
- *
- */
 @SpringBootApplication
-public class App 
+public class BookApplication
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(BookApplication.class, args);
     }
 }

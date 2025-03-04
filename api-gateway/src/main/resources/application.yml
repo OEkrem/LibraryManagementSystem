@@ -1,31 +1,31 @@
 server:
-  port: 8090 # Gateway'in çal??aca?? port
+  port: 8090 # Gateway'in portu
 
 spring:
   cloud:
     gateway:
       routes:
         - id: user-service
-          uri: http://localhost:8081 # Kitap servisi adresi
+          uri: http://localhost:8081 # User servisi adresi
           predicates:
             - Path=/api/users/**
 
         - id: book-service
-          uri: http://localhost:8082 # Kullan?c? servisi adresi
+          uri: http://localhost:8082 # Book servisi adresi
           predicates:
             - Path=/api/v1/books/**
 
         - id: category-service
-          uri: http://localhost:8083 # Kullan?c? servisi adresi
+          uri: http://localhost:8083 # Category servisi adresi
           predicates:
             - Path=/api/v1/categories/**
 
         - id: borrow-service
-          uri: http://localhost:8084 # Ödünç alma servisi adresi
+          uri: http://localhost:8084 # Borrow servisi adresi
           predicates:
             - Path=/api/v1/borrows/**
 
         - id: fine-service
-          uri: http://localhost:8085 # Ödünç alma servisi adresi
+          uri: http://localhost:8085 # Fine servisi adresi
           predicates:
             - Path=/api/v1/fines/**
