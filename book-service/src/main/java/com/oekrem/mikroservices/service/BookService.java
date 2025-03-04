@@ -6,16 +6,14 @@ import com.oekrem.mikroservices.dto.UpdateBookRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.UUID;
-
 public interface BookService {
 
     Page<BookResponse> findAllBooks(Pageable pageable, String filter);
-    BookResponse findById(UUID id);
+    BookResponse findById(Long id);
     BookResponse saveBook(CreateBookRequest createBookRequest);
-    BookResponse updateBook(UUID id, UpdateBookRequest updateBookRequest);
-    void deleteBook(UUID id);
+    BookResponse updateBook(Long id, UpdateBookRequest updateBookRequest);
+    void deleteBook(Long id);
 
-    BookResponse patchBook(UUID id, UpdateBookRequest updateBookRequest);
+    BookResponse patchBook(Long id, UpdateBookRequest updateBookRequest);
 
 }

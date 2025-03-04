@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -34,7 +32,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponse findById(UUID id) {
+    public BookResponse findById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow( () -> new BookNotFoundException("Book with id " + id + " not found"));
         return bookMapper.toResponse(book);
@@ -50,7 +48,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookResponse updateBook(UUID id, UpdateBookRequest updateBookRequest) {
+    public BookResponse updateBook(Long id, UpdateBookRequest updateBookRequest) {
         Book book = bookMapper.toBookFromUpdateRequest(updateBookRequest);
         book.setId(id);
         Book updatedBook = bookRepository.save(book);
@@ -59,7 +57,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteBook(UUID id) {
+    public void deleteBook(Long id) {
         bookRepository.findById(id)
                 .orElseThrow( () -> new BookNotFoundException("Book with id " + id + " not found"));
         bookRepository.deleteById(id);
@@ -67,7 +65,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookResponse patchBook(UUID id, UpdateBookRequest updateBookRequest) {
+    public BookResponse patchBook(Long id, UpdateBookRequest updateBookRequest) {
         Book book = bookRepository.findById(id)
                 .orElseThrow( ()-> new BookNotFoundException("Book with id " + id + " not found"));
 

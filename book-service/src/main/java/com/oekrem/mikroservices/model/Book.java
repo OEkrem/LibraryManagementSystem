@@ -1,13 +1,10 @@
 package com.oekrem.mikroservices.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @Builder
@@ -18,19 +15,20 @@ import java.util.UUID;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @SequenceGenerator(name = "book_seq_table", initialValue = 1, allocationSize = 1, sequenceName = "book_seq_table")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq_table")
+    private Long id;
 
     private String title;
     private String author;
     private String publisher;
     private Integer publishedYear;
 
-    private String pages;
+    private int pages;
     private String language;
     private String description;
 
-    private UUID category_id;
+    private Long category_id;
 
     private Integer stock;
     private Float rating;

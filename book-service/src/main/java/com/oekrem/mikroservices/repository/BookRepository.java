@@ -12,9 +12,9 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     Page<Book> findByNameContaining(Pageable pageable, String filter);
     Page<Book> findAll(Pageable pageable);
-    Optional<Book> findById(UUID id);
+    Optional<Book> findById(Long id);
     Book save(Book book);
 
-    void deleteById(UUID id);
+    void deleteById(Long id);
     void deleteAll();
 }

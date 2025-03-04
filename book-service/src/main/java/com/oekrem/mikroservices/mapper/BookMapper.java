@@ -6,7 +6,7 @@ import com.oekrem.mikroservices.dto.UpdateBookRequest;
 import com.oekrem.mikroservices.model.Book;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface BookMapper {
 
     BookResponse toResponse(Book book);

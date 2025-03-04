@@ -22,8 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @OpenAPIDefinition(
         info = @Info(
                 title = "Book API",
@@ -56,8 +54,8 @@ public class BookController {
     @Operation(summary = "Get Book by id", description = "Path: id")
     @ApiResponse(responseCode = "200", description = "Succesful", content = @Content(schema = @Schema(implementation = BookResponse.class)) )
     public ResponseEntity<BookResponse> getBookById(
-            @Parameter(description = "Book UUID", example = "550e8400-e29b-41d4-a716-446655440000",required = true)
-            @PathVariable UUID id
+            @Parameter(description = "Book id", example = "12",required = true)
+            @PathVariable Long id
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(bookService.findById(id));
     }
@@ -73,21 +71,21 @@ public class BookController {
     @PutMapping("/{id}")
     @Operation(summary = "Update the Book", description = "Path: id, Request: title, author, publisher, publishedDate, pages, language, description, category_id, stock, rating, edition")
     @ApiResponse(responseCode = "200", description = "Succesful", content = @Content(schema = @Schema(implementation = BookResponse.class)) )
-    public ResponseEntity<BookResponse> updateBook(@PathVariable UUID id, @RequestBody @Valid UpdateBookRequest updateBookRequest) {
+    public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @RequestBody @Valid UpdateBookRequest updateBookRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(bookService.updateBook(id, updateBookRequest));
     }
 
     @PatchMapping("/{id}")
     @Operation(summary = "Patch the Book", description = "Path: id, Request: title, author, publisher, publishedDate, pages, language, description, category_id, stock, rating, edition")
     @ApiResponse(responseCode = "200", description = "Succesful", content = @Content(schema = @Schema(implementation = BookResponse.class)) )
-    public ResponseEntity<BookResponse> patchBook(@PathVariable UUID id, @RequestBody UpdateBookRequest updateBookRequest) {
+    public ResponseEntity<BookResponse> patchBook(@PathVariable Long id, @RequestBody UpdateBookRequest updateBookRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(bookService.patchBook(id, updateBookRequest));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete the Book", description = "Path: id")
     @ApiResponse(responseCode = "204", description = "Succesful")
-    public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

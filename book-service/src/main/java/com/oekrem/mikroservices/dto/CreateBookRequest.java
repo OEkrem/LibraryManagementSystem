@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
-import java.util.UUID;
-
 @Builder
 @Schema(description = "Create Book Request Model")
 public record CreateBookRequest (
@@ -22,10 +20,10 @@ public record CreateBookRequest (
         String publisher,
         @NotNull(message = "Published Year is required")
         @Schema(description = "PublishedDate of book", example = "2017")
-        Integer publishedDate,
+        Integer publishedYear,
 
         @Schema(description = "Pages of book", example = "312")
-        String pages,
+        int pages,
         @Schema(description = "Language of book", example = "English")
         String language,
         @NotBlank(message = "Description is required")
@@ -33,8 +31,8 @@ public record CreateBookRequest (
         String description,
 
         @NotNull(message = "Category is required")
-        @Schema(description = "Category_id of book", example = "ecbf0aef-3071-47af-af2b-c7dc1dcaf1b7")
-        UUID category_id,
+        @Schema(description = "Category_id of book", example = "1")
+        Long category_id,
         @Schema(description = "Stock of book", example = "12")
         Integer stock,
         @Schema(description = "Rating of book", example = "7.2")
