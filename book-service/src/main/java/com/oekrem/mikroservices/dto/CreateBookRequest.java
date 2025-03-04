@@ -38,7 +38,9 @@ public record CreateBookRequest (
         @Schema(description = "Rating of book", example = "7.2")
         Float rating,
         @Schema(description = "Edition of book", example = "1.2")
-        String edition
+        String edition,
+        @Schema(description = "İmageUrl of Book", example = "/static/img/book1.jpeg")
+        String imageUrl
 
 ){
 }

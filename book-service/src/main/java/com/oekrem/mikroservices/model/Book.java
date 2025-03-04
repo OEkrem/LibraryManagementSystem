@@ -34,4 +34,6 @@ public class Book {
     private Float rating;
     private String edition;
 
+    private String imageUrl;
+
 }
