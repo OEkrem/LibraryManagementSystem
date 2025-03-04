@@ -15,11 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @OpenAPIDefinition(
@@ -41,8 +43,13 @@ public class BookController {
     @GetMapping
     @Operation(summary = "Get All Books", description = "Returns a list of all books.")
     @ApiResponse(responseCode = "200", description = "Succesful", content = @Content(schema = @Schema(implementation = BookResponse.class)) )
-    public ResponseEntity<List<BookResponse>> getAllBooks() {
-        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks());
+    public ResponseEntity<Page<BookResponse>> getAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String filter
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks(pageable, filter));
     }
 
     @GetMapping("/{id}")

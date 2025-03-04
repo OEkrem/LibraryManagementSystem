@@ -9,11 +9,11 @@ import com.oekrem.mikroservices.model.Book;
 import com.oekrem.mikroservices.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +23,14 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public List<BookResponse> findAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return  books.stream()
-                .map(bookMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<BookResponse> findAllBooks(Pageable pageable, String filter) {
+        Page<Book> booksPage = null;
+        if(filter != null && !filter.isEmpty())
+            booksPage = bookRepository.findByNameContaining(pageable, filter);
+        else
+            booksPage = bookRepository.findAll(pageable);
+
+        return  booksPage.map(bookMapper::toResponse);
     }
 
     @Override
