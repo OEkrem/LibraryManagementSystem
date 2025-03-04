@@ -7,6 +7,7 @@ import com.oekrem.mikroservices.exception.BookNotFoundException;
 import com.oekrem.mikroservices.mapper.BookMapper;
 import com.oekrem.mikroservices.model.Book;
 import com.oekrem.mikroservices.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookResponse saveBook(CreateBookRequest createBookRequest) {
         Book book = bookMapper.toBookFromCreateRequest(createBookRequest);
         Book savedBook = bookRepository.save(book);
@@ -44,6 +46,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookResponse updateBook(UUID id, UpdateBookRequest updateBookRequest) {
         Book book = bookMapper.toBookFromUpdateRequest(updateBookRequest);
         book.setId(id);
@@ -52,6 +55,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void deleteBook(UUID id) {
         bookRepository.findById(id)
                 .orElseThrow( () -> new BookNotFoundException("Book with id " + id + " not found"));
@@ -59,6 +63,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookResponse patchBook(UUID id, UpdateBookRequest updateBookRequest) {
         Book book = bookRepository.findById(id)
                 .orElseThrow( ()-> new BookNotFoundException("Book with id " + id + " not found"));
@@ -87,6 +92,7 @@ public class BookServiceImpl implements BookService {
             book.setRating(updateBookRequest.rating());
         if(updateBookRequest.edition() != null)
             book.setEdition(updateBookRequest.edition());
+        //bookMapper.updateBookFromRequest(updateBookRequest, book);
 
         Book updatedBook = bookRepository.save(book);
         return bookMapper.toResponse(updatedBook);

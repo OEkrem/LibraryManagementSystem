@@ -17,5 +17,4 @@ public interface BookService {
 
     BookResponse patchBook(UUID id, UpdateBookRequest updateBookRequest);
 
-
 }
