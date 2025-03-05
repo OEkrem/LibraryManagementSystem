@@ -1,13 +1,13 @@
 package com.oekrem.mikroservices;
 
-/**
- * Hello world!
- *
- */
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class CategoryApplication
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        SpringApplication.run(CategoryApplication.class, args);
     }
 }
