@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
-    Page<Book> findByNameContaining(Pageable pageable, String filter);
+    Page<Book> findByTitleContaining(Pageable pageable, String filter);
     Page<Book> findAll(Pageable pageable);
     Optional<Book> findById(Long id);
     Book save(Book book);

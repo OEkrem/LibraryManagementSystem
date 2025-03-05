@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
     public Page<BookResponse> findAllBooks(Pageable pageable, String filter) {
         Page<Book> booksPage = null;
         if(filter != null && !filter.isEmpty())
-            booksPage = bookRepository.findByNameContaining(pageable, filter);
+            booksPage = bookRepository.findByTitleContaining(pageable, filter);
         else
             booksPage = bookRepository.findAll(pageable);
 

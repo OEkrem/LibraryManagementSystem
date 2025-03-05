@@ -27,6 +27,7 @@ public class BookMapperTest {
                 .publishedYear(2015)
                 .publisher("publisher")
                 .rating(1.2F)
+                .imageUrl("imageUrl")
                 .build();
         System.out.println(book);
         BookResponse bookResponse = bookMapper.toResponse(book);
@@ -36,6 +37,7 @@ public class BookMapperTest {
         assertEquals(book.getId(), bookResponse.id());
         assertEquals(book.getPages(), bookResponse.pages());
         assertEquals(book.getPublishedYear(), bookResponse.publishedYear());
+        assertEquals(book.getImageUrl(), bookResponse.imageUrl());
     }
 
     @Test
@@ -52,6 +54,7 @@ public class BookMapperTest {
                 .publishedYear(2015)
                 .publisher("publisher")
                 .rating(1.2F)
+                .imageUrl("imageUrl")
                 .build();
         Book book = bookMapper.toBookFromCreateRequest(createBookRequest);
 
@@ -66,6 +69,7 @@ public class BookMapperTest {
         assertEquals(book.getPublishedYear(), createBookRequest.publishedYear());
         assertEquals(book.getPublisher(), createBookRequest.publisher());
         assertEquals(book.getRating(), createBookRequest.rating());
+        assertEquals(book.getImageUrl(), createBookRequest.imageUrl());
     }
 
     @Test
@@ -82,6 +86,7 @@ public class BookMapperTest {
                 .publishedYear(2015)
                 .publisher("publisher")
                 .rating(1.2F)
+                .imageUrl("imageUrl")
                 .build();
         Book book = bookMapper.toBookFromUpdateRequest(updateBookRequest);
 
@@ -96,6 +101,7 @@ public class BookMapperTest {
         assertEquals(book.getPublishedYear(), updateBookRequest.publishedYear());
         assertEquals(book.getPublisher(), updateBookRequest.publisher());
         assertEquals(book.getRating(), updateBookRequest.rating());
+        assertEquals(book.getImageUrl(), updateBookRequest.imageUrl());
     }
 
     @Test
@@ -113,6 +119,7 @@ public class BookMapperTest {
                 .publishedYear(2015)
                 .publisher("publisher")
                 .rating(1.2F)
+                .imageUrl("imageUrl")
                 .build();
 
         UpdateBookRequest updateBookRequest = UpdateBookRequest.builder()
@@ -126,6 +133,7 @@ public class BookMapperTest {
         assertEquals("author2", book.getAuthor());
         assertEquals(320, book.getPages());
         assertEquals("description", book.getDescription());
+        assertEquals("imageUrl", book.getImageUrl());
     }
 
     @Test
@@ -135,6 +143,7 @@ public class BookMapperTest {
         book.setId(1L);
         book.setTitle("Original Title");
         book.setAuthor("Original Author");
+        book.setImageUrl("Original ImageUrl");
 
         UpdateBookRequest request = UpdateBookRequest.builder()
                 .author(null)
@@ -146,5 +155,6 @@ public class BookMapperTest {
         // Assert
         assertEquals("Original Title", book.getTitle());
         assertEquals("Original Author", book.getAuthor());
+        assertEquals("Original ImageUrl", book.getImageUrl());
     }
 }
