@@ -1,6 +1,7 @@
 package com.oekrem.mikroservices.service;
 
 import com.oekrem.mikroservices.dto.CreateUserRequest;
+import com.oekrem.mikroservices.dto.PatchUserRequest;
 import com.oekrem.mikroservices.dto.UpdateUserRequest;
 import com.oekrem.mikroservices.dto.UserResponse;
 import com.oekrem.mikroservices.exception.UserNotFoundException;
@@ -8,11 +9,10 @@ import com.oekrem.mikroservices.mapper.UserMapper;
 import com.oekrem.mikroservices.model.User;
 import com.oekrem.mikroservices.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +22,19 @@ public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
 
     @Override
-    public List<UserResponse> findAll() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(userMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<UserResponse> findAll(int page, int size, String email) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> users;
+        if (email != null)
+            users = userRepository.findByEmail(pageable, email);
+        else
+            users = userRepository.findAll(pageable);
+
+        return users.map(userMapper::toResponse);
     }
 
     @Override
-    public UserResponse findById(UUID id) {
+    public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         return userMapper.toResponse(user);
@@ -44,7 +48,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponse update(UUID id, UpdateUserRequest updateUserRequest) {
+    public UserResponse update(Long id, UpdateUserRequest updateUserRequest) {
         User user = userMapper.toUserFromUpdateRequest(updateUserRequest);
         user.setId(id);
         User savedUser = userRepository.save(user);
@@ -52,29 +56,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
         userRepository.findById(id)
                 .orElseThrow( () -> new UserNotFoundException("User not found with id: " + id));
         userRepository.deleteById(id);
     }
 
     @Override
-    public UserResponse patch(UUID id, UpdateUserRequest updateUserRequest) {
+    public UserResponse patch(Long id, PatchUserRequest patchUserRequest) {
         User user = userRepository.findById(id)
                 .orElseThrow( () -> new UserNotFoundException("User not found with id: " + id));
 
-        if(updateUserRequest.email() != null)
-            user.setEmail(updateUserRequest.email());
-        if(updateUserRequest.password() != null)
-            user.setPassword(updateUserRequest.password());
-        if(updateUserRequest.username() != null)
-            user.setUsername(updateUserRequest.username());
-        if(updateUserRequest.firstName() != null)
-            user.setFirstName(updateUserRequest.firstName());
-        if(updateUserRequest.lastName() != null)
-            user.setLastName(updateUserRequest.lastName());
-        if(updateUserRequest.phone() != null)
-            user.setPhone(updateUserRequest.phone());
+        userMapper.patchUserFromRequest(patchUserRequest, user);
 
         User updatedUser = userRepository.save(user);
         return userMapper.toResponse(updatedUser);

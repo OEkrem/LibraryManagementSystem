@@ -1,19 +1,18 @@
 package com.oekrem.mikroservices.service;
 
 import com.oekrem.mikroservices.dto.CreateUserRequest;
+import com.oekrem.mikroservices.dto.PatchUserRequest;
 import com.oekrem.mikroservices.dto.UpdateUserRequest;
 import com.oekrem.mikroservices.dto.UserResponse;
-
-import java.util.List;
-import java.util.UUID;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
 
-    List<UserResponse> findAll();
-    UserResponse findById(UUID id);
+    Page<UserResponse> findAll(int page, int size, String email);
+    UserResponse findById(Long id);
     UserResponse save(CreateUserRequest createUserRequest);
-    UserResponse update(UUID id, UpdateUserRequest updateUserRequest);
-    void deleteById(UUID id);
+    UserResponse update(Long id, UpdateUserRequest updateUserRequest);
+    void deleteById(Long id);
 
-    UserResponse patch(UUID id, UpdateUserRequest updateUserRequest);
+    UserResponse patch(Long id, PatchUserRequest patchUserRequest);
 }
