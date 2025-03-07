@@ -30,7 +30,8 @@ public class Book {
 
     private Long category_id;
 
-    private Integer stock;
+    @Enumerated(EnumType.STRING)
+    private BookStatus status;
     private Float rating;
     private String edition;
 

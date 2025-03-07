@@ -1,6 +1,7 @@
 package com.oekrem.mikroservices.repository;
 
 import com.oekrem.mikroservices.model.Book;
+import com.oekrem.mikroservices.model.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,8 @@ import java.util.UUID;
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
     Page<Book> findByTitleContaining(Pageable pageable, String filter);
+    Page<Book> findByStatusContaining(Pageable pageable, BookStatus status);
+    Page<Book> findByTitleAndStatusContaining(Pageable pageable, String filter, BookStatus status);
     Page<Book> findAll(Pageable pageable);
     Optional<Book> findById(Long id);
     Book save(Book book);

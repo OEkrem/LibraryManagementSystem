@@ -1,5 +1,6 @@
 package com.oekrem.mikroservices.dto;
 
+import com.oekrem.mikroservices.model.BookStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +34,8 @@ public record UpdateBookRequest (
         @NotNull(message = "Category is required")
         @Schema(description = "Category_id of book", example = "1")
         Long category_id,
-        @Schema(description = "Stock of book", example = "12")
-        Integer stock,
+        @Schema(description = "Status of book", example = "AVAILABLE")
+        BookStatus status,
         @Schema(description = "Rating of book", example = "7.2")
         Float rating,
         @Schema(description = "Edition of book", example = "1.2")

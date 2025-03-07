@@ -3,6 +3,7 @@ package com.oekrem.mikroservices.controller;
 import com.oekrem.mikroservices.dto.BookResponse;
 import com.oekrem.mikroservices.dto.CreateBookRequest;
 import com.oekrem.mikroservices.dto.UpdateBookRequest;
+import com.oekrem.mikroservices.model.BookStatus;
 import com.oekrem.mikroservices.service.BookService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,8 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +43,10 @@ public class BookController {
     public ResponseEntity<Page<BookResponse>> getAllBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String filter
-    ) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks(pageable, filter));
+            @RequestParam(required = false) String filter,
+            @RequestParam(required = false) BookStatus status
+            ) {
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks(page, size, filter, status));
     }
 
     @GetMapping("/{id}")

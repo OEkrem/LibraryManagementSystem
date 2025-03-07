@@ -6,10 +6,12 @@ import com.oekrem.mikroservices.dto.UpdateBookRequest;
 import com.oekrem.mikroservices.exception.BookNotFoundException;
 import com.oekrem.mikroservices.mapper.BookMapper;
 import com.oekrem.mikroservices.model.Book;
+import com.oekrem.mikroservices.model.BookStatus;
 import com.oekrem.mikroservices.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,14 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public Page<BookResponse> findAllBooks(Pageable pageable, String filter) {
+    public Page<BookResponse> findAllBooks(int page, int size, String filter, BookStatus status) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<Book> booksPage = null;
-        if(filter != null && !filter.isEmpty())
+        if(filter != null && !filter.isEmpty() && status != null)
+            booksPage = bookRepository.findByTitleAndStatusContaining(pageable, filter, status);
+        else if(status != null)
+            booksPage = bookRepository.findByStatusContaining(pageable, status);
+        else if(filter != null && !filter.isEmpty())
             booksPage = bookRepository.findByTitleContaining(pageable, filter);
         else
             booksPage = bookRepository.findAll(pageable);
