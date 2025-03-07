@@ -1,15 +1,18 @@
 package com.oekrem.mikroservices.controller;
 
+import com.oekrem.mikroservices.dto.BookStatus;
 import com.oekrem.mikroservices.dto.CreateBookRequest;
 import com.oekrem.mikroservices.dto.UpdateBookRequest;
+import com.oekrem.mikroservices.utils.ServiceUriResolver;
+import com.oekrem.mikroservices.dto.BookResponse;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -17,19 +20,44 @@ import java.util.UUID;
 public class BookGatewayController {
 
     private final WebClient.Builder webClientBuilder;
+    private final ServiceUriResolver serviceUriResolver;
+    private String bookUri;
+
+    @PostConstruct
+    public void init() {
+        this.bookUri = serviceUriResolver.getServiceUri("book-service", BookGatewayController.class);
+        System.out.println("bookUri: " + bookUri);
+    }
 
     @GetMapping
-    public Mono<String> getBooks() {
+    public Mono<String> getBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false)BookStatus status
+            ) {
+        // Uri'yi dinamik şekilde oluşturuyoruz
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(bookUri)
+                .queryParam("page", page)
+                .queryParam("size", size);
+
+        // Opsiyonel parametreleri ekliyoruz
+        if (title != null)
+            uriBuilder.queryParam("title", title);
+
+        if (status != null)
+            uriBuilder.queryParam("status", status);
+
         return webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8082/api/v1/books")  // eğer ki service discovery kullanırsan bunlara gerek kalmıyor
+                .uri(uriBuilder.toUriString())  // eğer ki service discovery kullanırsan bunlara gerek kalmıyor
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono( String.class );
     }
 
     @GetMapping("/{id}")
-    public Mono<String> getBooksById(@PathVariable UUID id) {
-        String url = UriComponentsBuilder.fromUriString("http://localhost:8082/api/v1/books")
+    public Mono<BookResponse> getBooksById(@PathVariable Long id) {
+        String url = UriComponentsBuilder.fromUriString(bookUri)
                 .path("/" + id.toString())
                 .toUriString();
 
@@ -37,22 +65,22 @@ public class BookGatewayController {
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(BookResponse.class);
     }
 
     @PostMapping("/books")
-    public Mono<String> saveBook(@RequestBody CreateBookRequest createBookRequest) {
+    public Mono<BookResponse> saveBook(@RequestBody CreateBookRequest createBookRequest) {
         return webClientBuilder.build()
                 .post()
-                .uri("http://localhost:8082/api/v1/books")
+                .uri(bookUri)
                 .bodyValue(createBookRequest)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(BookResponse.class);
     }
 
     @PutMapping("/books/{id}")
-    public Mono<String> updateBook(@PathVariable UUID id, @RequestBody UpdateBookRequest updateBookRequest) {
-        String url = UriComponentsBuilder.fromUriString("http://localhost:8082/api/v1/books")
+    public Mono<BookResponse> updateBook(@PathVariable Long id, @RequestBody UpdateBookRequest updateBookRequest) {
+        String url = UriComponentsBuilder.fromUriString(bookUri)
                 .path("/" + id.toString())
                 .toUriString();
 
@@ -61,12 +89,12 @@ public class BookGatewayController {
                 .uri(url)
                 .bodyValue(updateBookRequest)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(BookResponse.class);
     }
 
     @PatchMapping("/books/{id}")
-    public Mono<String> patchBook(@PathVariable UUID id, @RequestBody UpdateBookRequest updateBookRequest) {
-        String url = UriComponentsBuilder.fromUriString("http://localhost:8082/api/v1/books")
+    public Mono<BookResponse> patchBook(@PathVariable Long id, @RequestBody UpdateBookRequest updateBookRequest) {
+        String url = UriComponentsBuilder.fromUriString(bookUri)
                 .path("/" + id.toString())
                 .toUriString();
 
@@ -75,12 +103,12 @@ public class BookGatewayController {
                 .uri(url)
                 .bodyValue(updateBookRequest)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(BookResponse.class);
     }
 
     @DeleteMapping("/books/{id}")
-    public Mono<String> deleteBook(@PathVariable UUID id){
-        String url = UriComponentsBuilder.fromUriString("http://localhost:8082/api/v1/books")
+    public Mono<Void> deleteBook(@PathVariable Long id){
+        String url = UriComponentsBuilder.fromUriString(bookUri)
                 .path("/" + id)
                 .toUriString();
 
@@ -88,8 +116,7 @@ public class BookGatewayController {
                 .delete()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(void.class);
     }
-
 
 }
