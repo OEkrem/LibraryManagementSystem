@@ -1,18 +1,19 @@
 package com.oekrem.mikroservices.model;
 
+import lombok.Getter;
+
+@Getter
 public enum BorrowStatus {
-    AVAILABLE("AVAILABLE"),
-    LOST("LOST"),
     BORROWED("BORROWED"),
-    EXPIRED("EXPIRED");
+    OVERDUE("OVERDUE"),
+    RETURNED("RETURNED"),
+    LOST("LOST"),
+    DAMAGED("DAMAGED"),;
 
     private final String displayName;
 
     BorrowStatus(String displayName) {
         this.displayName = displayName;
-    }
-    public String getDisplayName() {
-        return displayName;
     }
 
     public static BorrowStatus fromString(String text) {
