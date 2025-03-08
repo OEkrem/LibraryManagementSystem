@@ -29,3 +29,12 @@ spring:
           uri: http://localhost:8085 # Fine servisi adresi
           predicates:
             - Path=/api/v1/fines/**
+
+# OpenAPI (Swagger) ayarlari
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

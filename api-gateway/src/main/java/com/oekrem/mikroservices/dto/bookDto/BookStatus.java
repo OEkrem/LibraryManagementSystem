@@ -1,4 +1,4 @@
-package com.oekrem.mikroservices.dto;
+package com.oekrem.mikroservices.dto.bookDto;
 
 import lombok.Getter;
 

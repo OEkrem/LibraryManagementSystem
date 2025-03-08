@@ -43,10 +43,10 @@ public class BookController {
     public ResponseEntity<CustomPage<BookResponse>> getAllBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String filter,
+            @RequestParam(required = false) String title,
             @RequestParam(required = false) BookStatus status
             ) {
-        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks(page, size, filter, status));
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.findAllBooks(page, size, title, status));
     }
 
     @GetMapping("/{id}")

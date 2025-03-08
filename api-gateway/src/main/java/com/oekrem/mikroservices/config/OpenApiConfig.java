@@ -11,8 +11,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("User API")
+                        .title("Kütüphane API")
                         .version("1.0")
-                        .description("User yönetimi için oluşturulmuş REST API dokümantasyonu."));
+                        .description("Gateway yönetimi için oluşturulmuş REST API dokümantasyonu."));
     }
 }
