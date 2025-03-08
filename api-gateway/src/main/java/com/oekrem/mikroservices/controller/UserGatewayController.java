@@ -37,13 +37,10 @@ public class UserGatewayController {
 
     private final WebClient.Builder webClientBuilder;
     private final ServiceUriResolver serviceUriResolver;
-    private String userUri;
 
     @PostConstruct
     public void init() {
-        userUri = serviceUriResolver.getServiceUri("user-service", UserGatewayController.class);
-        webClientBuilder.baseUrl(userUri);
-        System.out.println("Useruri: " + userUri);
+        webClientBuilder.baseUrl(serviceUriResolver.getServiceUri("user-service", UserGatewayController.class));
     }
 
     @GetMapping
