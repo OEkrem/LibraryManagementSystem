@@ -8,6 +8,7 @@ import com.oekrem.mikroservices.mapper.BookMapper;
 import com.oekrem.mikroservices.model.Book;
 import com.oekrem.mikroservices.model.BookStatus;
 import com.oekrem.mikroservices.repository.BookRepository;
+import com.oekrem.mikroservices.utils.CustomPage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public Page<BookResponse> findAllBooks(int page, int size, String filter, BookStatus status) {
+    public CustomPage<BookResponse> findAllBooks(int page, int size, String filter, BookStatus status) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> booksPage = null;
         if(filter != null && !filter.isEmpty() && status != null)
@@ -35,7 +36,8 @@ public class BookServiceImpl implements BookService {
         else
             booksPage = bookRepository.findAll(pageable);
 
-        return  booksPage.map(bookMapper::toResponse);
+        Page<BookResponse> booksResponse = booksPage.map(bookMapper::toResponse);
+        return CustomPage.toCustomPage(booksResponse);
     }
 
     @Override
@@ -81,4 +83,5 @@ public class BookServiceImpl implements BookService {
         Book updatedBook = bookRepository.save(book);
         return bookMapper.toResponse(updatedBook);
     }
+
 }

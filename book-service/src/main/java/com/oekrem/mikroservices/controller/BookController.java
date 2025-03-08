@@ -5,6 +5,7 @@ import com.oekrem.mikroservices.dto.CreateBookRequest;
 import com.oekrem.mikroservices.dto.UpdateBookRequest;
 import com.oekrem.mikroservices.model.BookStatus;
 import com.oekrem.mikroservices.service.BookService;
+import com.oekrem.mikroservices.utils.CustomPage;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +40,7 @@ public class BookController {
     @GetMapping
     @Operation(summary = "Get All Books", description = "Returns a list of all books.")
     @ApiResponse(responseCode = "200", description = "Succesful", content = @Content(schema = @Schema(implementation = BookResponse.class)) )
-    public ResponseEntity<Page<BookResponse>> getAllBooks(
+    public ResponseEntity<CustomPage<BookResponse>> getAllBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String filter,

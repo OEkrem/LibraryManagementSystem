@@ -3,16 +3,19 @@ package com.oekrem.mikroservices.controller;
 import com.oekrem.mikroservices.dto.BookStatus;
 import com.oekrem.mikroservices.dto.CreateBookRequest;
 import com.oekrem.mikroservices.dto.UpdateBookRequest;
+import com.oekrem.mikroservices.utils.CustomPage;
 import com.oekrem.mikroservices.utils.ServiceUriResolver;
 import com.oekrem.mikroservices.dto.BookResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -26,33 +29,29 @@ public class BookGatewayController {
     @PostConstruct
     public void init() {
         this.bookUri = serviceUriResolver.getServiceUri("book-service", BookGatewayController.class);
-        System.out.println("bookUri: " + bookUri);
+        webClientBuilder.baseUrl(bookUri);
     }
 
     @GetMapping
-    public Mono<String> getBooks(
+    public Mono<ResponseEntity<CustomPage<BookResponse>>> getBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String title,
             @RequestParam(required = false)BookStatus status
             ) {
-        // Uri'yi dinamik şekilde oluşturuyoruz
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(bookUri)
-                .queryParam("page", page)
-                .queryParam("size", size);
-
-        // Opsiyonel parametreleri ekliyoruz
-        if (title != null)
-            uriBuilder.queryParam("title", title);
-
-        if (status != null)
-            uriBuilder.queryParam("status", status);
 
         return webClientBuilder.build()
                 .get()
-                .uri(uriBuilder.toUriString())  // eğer ki service discovery kullanırsan bunlara gerek kalmıyor
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("page", page)
+                        .queryParam("size", size)
+                        .queryParamIfPresent("title", Optional.ofNullable(title))
+                        .queryParamIfPresent("status", Optional.ofNullable(status).map(Enum::name))
+                        .build()
+                )
                 .retrieve()
-                .bodyToMono( String.class );
+                .bodyToMono(new ParameterizedTypeReference<CustomPage<BookResponse>>() {})
+                .map(ResponseEntity::ok);
     }
 
     @GetMapping("/{id}")
@@ -66,6 +65,7 @@ public class BookGatewayController {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(BookResponse.class);
+
     }
 
     @PostMapping("/books")

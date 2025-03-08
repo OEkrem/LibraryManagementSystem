@@ -4,11 +4,11 @@ import com.oekrem.mikroservices.dto.CreateUserRequest;
 import com.oekrem.mikroservices.dto.PatchUserRequest;
 import com.oekrem.mikroservices.dto.UpdateUserRequest;
 import com.oekrem.mikroservices.dto.UserResponse;
-import org.springframework.data.domain.Page;
+import com.oekrem.mikroservices.utils.CustomPage;
 
 public interface UserService {
 
-    Page<UserResponse> findAll(int page, int size, String email);
+    CustomPage<UserResponse> findAll(int page, int size, String email);
     UserResponse findById(Long id);
     UserResponse save(CreateUserRequest createUserRequest);
     UserResponse update(Long id, UpdateUserRequest updateUserRequest);

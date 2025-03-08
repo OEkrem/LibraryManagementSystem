@@ -8,6 +8,7 @@ import com.oekrem.mikroservices.exception.UserNotFoundException;
 import com.oekrem.mikroservices.mapper.UserMapper;
 import com.oekrem.mikroservices.model.User;
 import com.oekrem.mikroservices.repository.UserRepository;
+import com.oekrem.mikroservices.utils.CustomPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
 
     @Override
-    public Page<UserResponse> findAll(int page, int size, String email) {
+    public CustomPage<UserResponse> findAll(int page, int size, String email) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> users;
         if (email != null)
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService{
         else
             users = userRepository.findAll(pageable);
 
-        return users.map(userMapper::toResponse);
+        return CustomPage.toCustomPage(users.map(userMapper::toResponse));
     }
 
     @Override

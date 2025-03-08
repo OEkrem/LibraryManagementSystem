@@ -8,6 +8,7 @@ import com.oekrem.mikroservices.exception.CategoryNotFoundException;
 import com.oekrem.mikroservices.mapper.CategoryMapper;
 import com.oekrem.mikroservices.model.Category;
 import com.oekrem.mikroservices.repository.CategoryRepository;
+import com.oekrem.mikroservices.utils.CustomPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public Page<CategoryResponse> findAll(int page, int size, String name) {
+    public CustomPage<CategoryResponse> findAll(int page, int size, String name) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Category> categories;
 
@@ -31,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
         else
             categories = categoryRepository.findAll(pageable);
 
-        return categories.map(categoryMapper::toResponse);
+        return CustomPage.toCustomPage(categories.map(categoryMapper::toResponse));
     }
 
     @Override

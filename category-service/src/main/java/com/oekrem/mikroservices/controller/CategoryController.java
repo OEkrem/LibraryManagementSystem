@@ -5,6 +5,7 @@ import com.oekrem.mikroservices.dto.CreateCategoryRequest;
 import com.oekrem.mikroservices.dto.PatchCategoryRequest;
 import com.oekrem.mikroservices.dto.UpdateCategoryRequest;
 import com.oekrem.mikroservices.service.CategoryService;
+import com.oekrem.mikroservices.utils.CustomPage;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get all Categories", description = "Parameters: int page, int size, String name")
     @ApiResponse(responseCode = "200", description = "Successful")
-    public ResponseEntity<Page<CategoryResponse>> getAllCategories(
+    public ResponseEntity<CustomPage<CategoryResponse>> getAllCategories(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String name

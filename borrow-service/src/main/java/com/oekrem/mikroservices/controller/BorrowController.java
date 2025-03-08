@@ -6,6 +6,7 @@ import com.oekrem.mikroservices.dto.PatchBorrowRequest;
 import com.oekrem.mikroservices.dto.UpdateBorrowRequest;
 import com.oekrem.mikroservices.model.BorrowStatus;
 import com.oekrem.mikroservices.service.BorrowService;
+import com.oekrem.mikroservices.utils.CustomPage;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -14,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ public class BorrowController {
             "\nBorrowStatus status(not required), Long user_id(not required), Long book_id(not required)" +
             "\nAllow us only choose one filter parameter. For example if you want to filter by book_id dont use other filters")
     @ApiResponse(responseCode = "200", description = "Get All Borrows Succesfully")
-    public ResponseEntity<Page<BorrowResponse>> getAllBorrows(
+    public ResponseEntity<CustomPage<BorrowResponse>> getAllBorrows(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) BorrowStatus status,

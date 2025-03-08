@@ -9,6 +9,7 @@ import com.oekrem.mikroservices.mapper.BorrowMapper;
 import com.oekrem.mikroservices.model.Borrow;
 import com.oekrem.mikroservices.model.BorrowStatus;
 import com.oekrem.mikroservices.repository.BorrowRepository;
+import com.oekrem.mikroservices.utils.CustomPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class BorrowServiceImpl implements BorrowService {
     private final BorrowMapper borrowMapper;
 
     @Override
-    public Page<BorrowResponse> getAll(Pageable pageable, BorrowStatus status, Long userId, Long bookId) {
+    public CustomPage<BorrowResponse> getAll(Pageable pageable, BorrowStatus status, Long userId, Long bookId) {
 
         System.out.println("Status: " + status + " userId: " + userId + " bookId: " + bookId);
         Page<Borrow> borrows;
@@ -37,7 +38,7 @@ public class BorrowServiceImpl implements BorrowService {
         }else {
             borrows = borrowRepository.findAll(pageable);
         }
-        return borrows.map(borrowMapper::toResponse);
+        return CustomPage.toCustomPage(borrows.map(borrowMapper::toResponse));
     }
 
     @Override
